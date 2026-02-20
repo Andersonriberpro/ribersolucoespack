@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useAuth } from './AuthContext';
 
 interface NavbarProps {
     isDarkMode: boolean;
@@ -8,6 +9,8 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ isDarkMode, toggleTheme, userName }) => {
+    const { userProfile } = useAuth();
+
     return (
         <header className="mb-8 flex justify-between items-center">
             <div className="bg-white dark:bg-slate-900 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-3 transition-colors">
@@ -32,9 +35,17 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkMode, toggleTheme, userName }) =>
 
                 <div className="h-8 w-[1px] bg-slate-200 dark:bg-slate-800"></div>
 
-                <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition group relative">
+                <div className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition group">
+                    <div className="w-8 h-8 rounded-full border-2 border-indigo-500 overflow-hidden flex-shrink-0">
+                        {userProfile?.avatar_url ? (
+                            <img src={userProfile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+                        ) : (
+                            <div className="w-full h-full bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center">
+                                <i className="fas fa-user text-indigo-400 text-[10px]"></i>
+                            </div>
+                        )}
+                    </div>
                     <span className="text-sm font-bold text-slate-700 dark:text-slate-200 group-hover:text-indigo-500">{userName}</span>
-                    <i className="fas fa-chevron-down text-xs text-slate-400"></i>
                 </div>
             </div>
         </header>

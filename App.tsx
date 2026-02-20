@@ -11,10 +11,11 @@ import CommissionControl from './components/CommissionControl';
 import BudgetList from './components/BudgetList';
 import OrderList from './components/OrderList';
 import LoginPage from './components/LoginPage';
+import AdminPanel from './components/AdminPanel';
 import { useAuth } from './components/AuthContext';
 
 const App: React.FC = () => {
-  const { user, loading, signOut } = useAuth();
+  const { user, loading, signOut, userProfile } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -23,11 +24,12 @@ const App: React.FC = () => {
   });
 
   const userName = useMemo(() => {
+    if (userProfile?.full_name) return userProfile.full_name;
     if (user) {
       return user.user_metadata?.full_name || user.email?.split('@')[0] || 'Usuário';
     }
     return 'Usuário';
-  }, [user]);
+  }, [user, userProfile]);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -78,6 +80,8 @@ const App: React.FC = () => {
         return <BudgetList />;
       case 'orders':
         return <OrderList />;
+      case 'admin':
+        return <AdminPanel />;
       default:
         return <Dashboard />;
     }
