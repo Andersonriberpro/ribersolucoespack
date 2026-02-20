@@ -17,6 +17,7 @@ import { useAuth } from './components/AuthContext';
 const App: React.FC = () => {
   const { user, loading, signOut, userProfile } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -89,10 +90,10 @@ const App: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} onLogout={handleLogout} userName={userName} />
+      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} onLogout={handleLogout} userName={userName} isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      <main className="flex-1 p-8 overflow-y-auto max-h-screen custom-scrollbar">
-        <Navbar isDarkMode={isDarkMode} toggleTheme={toggleTheme} userName={userName} />
+      <main className="flex-1 p-4 lg:p-8 overflow-y-auto max-h-screen custom-scrollbar">
+        <Navbar isDarkMode={isDarkMode} toggleTheme={toggleTheme} userName={userName} onMenuToggle={() => setSidebarOpen(!sidebarOpen)} />
 
         <div className="animate-in fade-in duration-500">
           {renderContent()}

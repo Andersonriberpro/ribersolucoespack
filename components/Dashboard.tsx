@@ -173,7 +173,7 @@ const Dashboard: React.FC = () => {
       </header>
 
       {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4">
         {[
           { label: 'Total Faturado', value: `R$ ${stats.totalFaturado.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`, icon: 'fa-money-bill-trend-up', color: 'text-emerald-600', bg: 'bg-emerald-50 dark:bg-emerald-500/10' },
           { label: 'Comissões', value: `R$ ${stats.totalComissao.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`, icon: 'fa-hand-holding-dollar', color: 'text-amber-600', bg: 'bg-amber-50 dark:bg-amber-500/10' },
@@ -182,7 +182,7 @@ const Dashboard: React.FC = () => {
           { label: 'Pedidos Cancelados', value: stats.cancelados, icon: 'fa-ban', color: 'text-rose-600', bg: 'bg-rose-50 dark:bg-rose-500/10' },
           { label: 'Conversão', value: `${stats.conversionRate.toFixed(1)}%`, icon: 'fa-arrow-up-right-dots', color: 'text-slate-600', bg: 'bg-slate-100 dark:bg-slate-800' },
         ].map((kpi, idx) => (
-          <div key={idx} className="bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col items-center text-center transition-all hover:shadow-md">
+          <div key={idx} className="bg-white dark:bg-slate-900 p-4 lg:p-5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col items-center text-center transition-all hover:shadow-md">
             <div className={`${kpi.bg} ${kpi.color} w-10 h-10 rounded-xl flex items-center justify-center mb-3`}>
               <i className={`fas ${kpi.icon} text-lg`}></i>
             </div>
@@ -201,7 +201,7 @@ const Dashboard: React.FC = () => {
               <h3 className="text-lg font-bold dark:text-slate-100">Volume de Vendas Mensal (R$)</h3>
               <span className="text-[10px] font-black bg-indigo-50 text-indigo-600 px-2 py-1 rounded-full uppercase">Faturamento</span>
             </div>
-            <div className="h-[300px]">
+            <div className="h-[200px] md:h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={barDataBilling}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" opacity={0.1} />
@@ -228,7 +228,7 @@ const Dashboard: React.FC = () => {
               <h3 className="text-lg font-bold dark:text-slate-100">Volume de Vendas em Kilos (kg)</h3>
               <span className="text-[10px] font-black bg-emerald-50 text-emerald-600 px-2 py-1 rounded-full uppercase">Peso Produzido</span>
             </div>
-            <div className="h-[300px]">
+            <div className="h-[200px] md:h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={barDataKg}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#334155" opacity={0.1} />
@@ -256,7 +256,7 @@ const Dashboard: React.FC = () => {
             <h3 className="text-lg font-bold dark:text-slate-100">Faturamento por Representada</h3>
             <i className="fas fa-pie-chart text-slate-300"></i>
           </div>
-          <div className="h-[400px]">
+          <div className="h-[300px] md:h-[400px]">
             {pieData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>

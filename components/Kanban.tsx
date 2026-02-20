@@ -164,7 +164,7 @@ const Kanban: React.FC = () => {
           {columns.map((column) => (
             <div
               key={column}
-              className={`flex-shrink-0 w-80 rounded-2xl border min-h-[500px] flex flex-col transition-colors ${getColumnColor(column)}`}
+              className={`flex-shrink-0 w-72 md:w-80 rounded-2xl border min-h-[500px] flex flex-col transition-colors ${getColumnColor(column)}`}
               onDragOver={onDragOver}
               onDrop={(e) => onDrop(e, column)}
             >
