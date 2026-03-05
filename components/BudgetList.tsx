@@ -38,23 +38,28 @@ const BudgetList: React.FC = () => {
   }, []);
 
   const handleSave = async (data: any) => {
-    if (data.id) {
-      const budgetData: Partial<Budget> = {
-        numero: data.numero,
-        clientId: data.clientId,
-        productId: data.productId,
-        quantidade: data.unidade === 'MIL' ? data.quantidadeMlh : data.pesoTotalInput,
-        valorUnitario: data.precoUnitarioIcms,
-        valorTotal: (data.unidade === 'MIL' ? data.quantidadeMlh : data.pesoTotalInput) * data.precoUnitarioIcms,
-        validade: data.validadeOrcamento
-      };
-      await dataService.updateBudget(data.id, budgetData);
-    } else {
-      await dataService.addBudget(data);
+    try {
+      if (data.id) {
+        const budgetData: Partial<Budget> = {
+          numero: data.numero,
+          clientId: data.clientId,
+          productId: data.productId,
+          quantidade: data.unidade === 'MIL' ? data.quantidadeMlh : data.pesoTotalInput,
+          valorUnitario: data.precoUnitarioIcms,
+          valorTotal: (data.unidade === 'MIL' ? data.quantidadeMlh : data.pesoTotalInput) * data.precoUnitarioIcms,
+          validade: data.validadeOrcamento
+        };
+        await dataService.updateBudget(data.id, budgetData);
+      } else {
+        await dataService.addBudget(data);
+      }
+      fetchData();
+      setIsModalOpen(false);
+      setSelectedBudget(null);
+    } catch (error) {
+      console.error('Erro ao salvar orçamento:', error);
+      alert('Erro ao salvar o orçamento. Verifique os dados e tente novamente.');
     }
-    fetchData();
-    setIsModalOpen(false);
-    setSelectedBudget(null);
   };
 
   const handleEdit = (budget: Budget) => {

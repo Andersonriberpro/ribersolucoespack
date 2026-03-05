@@ -86,7 +86,6 @@ const ClientFormModal: React.FC<ClientFormModalProps> = ({ isOpen, onClose, onSa
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSave(initialData ? { ...formData, id: initialData.id } : formData);
-    onClose();
   };
 
   return (

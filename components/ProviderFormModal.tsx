@@ -106,7 +106,6 @@ const ProviderFormModal: React.FC<ProviderFormModalProps> = ({ isOpen, onClose, 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSave(initialData ? { ...formData, id: initialData.id } : formData);
-    onClose();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

@@ -48,14 +48,19 @@ const ClientList: React.FC = () => {
   };
 
   const handleSave = async (data: any) => {
-    if (data.id) {
-      await dataService.updateClient(data.id, data);
-    } else {
-      await dataService.addClient(data);
+    try {
+      if (data.id) {
+        await dataService.updateClient(data.id, data);
+      } else {
+        await dataService.addClient(data);
+      }
+      fetchClients();
+      setIsModalOpen(false);
+      setSelectedClient(null);
+    } catch (error) {
+      console.error('Erro ao salvar cliente:', error);
+      alert('Erro ao salvar o cadastro. Verifique os dados e tente novamente.');
     }
-    fetchClients();
-    setIsModalOpen(false);
-    setSelectedClient(null);
   };
 
   return (

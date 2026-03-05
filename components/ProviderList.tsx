@@ -35,14 +35,19 @@ const ProviderList: React.FC = () => {
   );
 
   const handleSave = async (data: any) => {
-    if (data.id) {
-      await dataService.updateProvider(data.id, data);
-    } else {
-      await dataService.addProvider(data);
+    try {
+      if (data.id) {
+        await dataService.updateProvider(data.id, data);
+      } else {
+        await dataService.addProvider(data);
+      }
+      fetchProviders();
+      setIsModalOpen(false);
+      setSelectedProvider(null);
+    } catch (error) {
+      console.error('Erro ao salvar fornecedor:', error);
+      alert('Erro ao salvar o fornecedor. Verifique os dados e tente novamente.');
     }
-    fetchProviders();
-    setIsModalOpen(false);
-    setSelectedProvider(null);
   };
 
   const handleEdit = (provider: Provider) => {
