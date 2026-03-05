@@ -26,7 +26,8 @@ const ClientFormModal: React.FC<ClientFormModalProps> = ({ isOpen, onClose, onSa
     responsavel: 'Carlos Representante',
     status: KanbanStatus.PROSPECCAO,
     ativo: true,
-    obs: ''
+    obs: '',
+    createdAt: new Date().toISOString().split('T')[0]
   });
 
   const origemOptions = [
@@ -53,7 +54,8 @@ const ClientFormModal: React.FC<ClientFormModalProps> = ({ isOpen, onClose, onSa
         responsavel: initialData.responsavel,
         status: initialData.status,
         ativo: initialData.ativo ?? true,
-        obs: initialData.obs
+        obs: initialData.obs,
+        createdAt: initialData.createdAt ? new Date(initialData.createdAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
       });
     } else {
       setFormData({
@@ -70,7 +72,8 @@ const ClientFormModal: React.FC<ClientFormModalProps> = ({ isOpen, onClose, onSa
         responsavel: 'Carlos Representante',
         status: KanbanStatus.PROSPECCAO,
         ativo: true,
-        obs: ''
+        obs: '',
+        createdAt: new Date().toISOString().split('T')[0]
       });
     }
   }, [initialData, isOpen]);
@@ -188,6 +191,29 @@ const ClientFormModal: React.FC<ClientFormModalProps> = ({ isOpen, onClose, onSa
                 <option value="">Selecione a origem...</option>
                 {origemOptions.map(opt => <option key={opt} value={opt}>{opt}</option>)}
               </select>
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Responsável <span className="text-rose-500">*</span></label>
+              <input
+                type="text"
+                name="responsavel"
+                required
+                value={formData.responsavel}
+                onChange={handleChange}
+                autoComplete="off"
+                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Data de Cadastro <span className="text-rose-500">*</span></label>
+              <input
+                type="date"
+                name="createdAt"
+                required
+                value={formData.createdAt}
+                onChange={handleChange}
+                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-bold"
+              />
             </div>
           </div>
 

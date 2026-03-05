@@ -85,14 +85,19 @@ const Kanban: React.FC = () => {
   };
 
   const handleSaveClient = async (data: any) => {
-    if (data.id) {
-      await dataService.updateClient(data.id, data);
-    } else {
-      await dataService.addClient(data);
+    try {
+      if (data.id) {
+        await dataService.updateClient(data.id, data);
+      } else {
+        await dataService.addClient(data);
+      }
+      fetchClients();
+      setIsClientModalOpen(false);
+      setSelectedClient(null);
+    } catch (error) {
+      console.error('Erro ao salvar cliente:', error);
+      alert('Erro ao salvar o cadastro. Verifique os dados e tente novamente.');
     }
-    fetchClients();
-    setIsClientModalOpen(false);
-    setSelectedClient(null);
   };
 
   const checkAlert = (client: Client) => {
@@ -232,6 +237,12 @@ const Kanban: React.FC = () => {
                           <p className="text-[10px] text-slate-400 dark:text-slate-500 flex items-center gap-2">
                             <i className="fas fa-clock opacity-40"></i> Na etapa há: <span className="text-indigo-500 font-bold">{getStageTime(client)}</span>
                           </p>
+                          <p className="text-[10px] text-slate-400 dark:text-slate-500 flex items-center gap-2">
+                            <i className="fas fa-calendar-plus opacity-40"></i> Criado em: <span className="font-bold">{new Date(client.createdAt).toLocaleDateString()}</span>
+                          </p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                            <i className="fas fa-user-tie opacity-40"></i> Resp: <span className="font-bold text-slate-700 dark:text-slate-300">{client.responsavel}</span>
+                          </p>
                         </div>
 
                         {client.proximaAcaoData && (
@@ -243,8 +254,7 @@ const Kanban: React.FC = () => {
                           </div>
                         )}
 
-                        <div className="mt-4 pt-3 border-t border-slate-50 dark:border-slate-700 flex items-center justify-between">
-                          <span className="text-[9px] text-slate-400 font-bold">{client.responsavel}</span>
+                        <div className="mt-4 pt-3 border-t border-slate-50 dark:border-slate-700 flex items-center justify-end">
                           <div className="flex gap-2">
                             <a href={`https://wa.me/${client.whatsapp.replace(/\D/g, '')}`} target="_blank" className="text-emerald-500 hover:scale-110 transition"><i className="fab fa-whatsapp"></i></a>
                           </div>

@@ -1,6 +1,6 @@
 
 import { supabase } from './supabase';
-import { Client, Provider, ProductSpecification, Budget, Order, Interaction, CommissionStatus, KanbanStatus } from '../types';
+import { Client, Provider, ProductSpecification, Budget, Order, Interaction, CommissionStatus, KanbanStatus, ClientType } from '../types';
 
 class DataService {
   // --- CLIENTS ---
@@ -63,9 +63,16 @@ class DataService {
   }
 
   async updateClientStatus(clientId: string, status: KanbanStatus) {
+    const updateData: any = { status };
+
+    // Automatic conversion: Lead to Cliente when moving to Pedido
+    if (status === KanbanStatus.PEDIDO) {
+      updateData.type = ClientType.CLIENTE;
+    }
+
     const { error } = await supabase
       .from('clients')
-      .update({ status })
+      .update(updateData)
       .eq('id', clientId);
 
     if (error) throw error;
@@ -123,6 +130,7 @@ class DataService {
     if (data.nomeFantasia) { updateData.nome_fantasia = data.nomeFantasia; delete updateData.nomeFantasia; }
     if (data.proximaAcaoData) { updateData.proxima_acao_data = data.proximaAcaoData; delete updateData.proximaAcaoData; }
     if (data.proximaAcaoDesc) { updateData.proxima_acao_desc = data.proximaAcaoDesc; delete updateData.proximaAcaoDesc; }
+    if (data.createdAt) { updateData.created_at = data.createdAt; delete updateData.createdAt; }
 
     const { error } = await supabase.from('clients').update(updateData).eq('id', clientId);
     if (error) throw error;
