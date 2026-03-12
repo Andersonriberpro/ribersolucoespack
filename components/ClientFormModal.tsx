@@ -41,20 +41,20 @@ const ClientFormModal: React.FC<ClientFormModalProps> = ({ isOpen, onClose, onSa
   useEffect(() => {
     if (initialData) {
       setFormData({
-        type: initialData.type,
-        razaoSocial: initialData.razaoSocial,
-        nomeFantasia: initialData.nomeFantasia,
-        documento: initialData.documento,
-        contato: initialData.contato,
-        whatsapp: initialData.whatsapp,
-        email: initialData.email,
-        endereco: initialData.endereco,
-        segmento: initialData.segmento,
-        origem: initialData.origem,
-        responsavel: initialData.responsavel,
-        status: initialData.status,
+        type: initialData.type || ClientType.LEAD,
+        razaoSocial: initialData.razaoSocial || '',
+        nomeFantasia: initialData.nomeFantasia || '',
+        documento: initialData.documento || '',
+        contato: initialData.contato || '',
+        whatsapp: initialData.whatsapp || '',
+        email: initialData.email || '',
+        endereco: initialData.endereco || '',
+        segmento: initialData.segmento || '',
+        origem: initialData.origem || '',
+        responsavel: initialData.responsavel || 'Carlos Representante',
+        status: initialData.status || KanbanStatus.PROSPECCAO,
         ativo: initialData.ativo ?? true,
-        obs: initialData.obs,
+        obs: initialData.obs || '',
         createdAt: initialData.createdAt ? new Date(initialData.createdAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
       });
     } else {

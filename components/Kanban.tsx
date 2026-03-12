@@ -39,14 +39,9 @@ const Kanban: React.FC = () => {
   const filteredClients = useMemo(() => {
     return clients.filter(c => {
       if (c.arquivado) return false; // Remove cards arquivados da visão do funil
-
-      const matchResp = filterResponsavel ? c.responsavel.toLowerCase().includes(filterResponsavel.toLowerCase()) : true;
-      const clientDate = new Date(c.createdAt).getTime();
-      const start = filterStartDate ? new Date(filterStartDate).getTime() : 0;
-      const end = filterEndDate ? new Date(filterEndDate).getTime() : Infinity;
-      return matchResp && clientDate >= start && clientDate <= end;
+      return true;
     });
-  }, [clients, filterResponsavel, filterStartDate, filterEndDate]);
+  }, [clients]);
 
   const onDragStart = (e: React.DragEvent, id: string) => {
     e.dataTransfer.setData('clientId', id);
@@ -132,17 +127,17 @@ const Kanban: React.FC = () => {
       <PageHeader title="Funil de Vendas" subtitle="Acompanhamento de CRM e Follow-up de pedidos.">
         <div className="flex flex-wrap items-center gap-4 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm transition-all">
           <div className="flex flex-col gap-1">
-            <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Responsável</label>
+            <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Resp. p/ Novo Cadastro</label>
             <input
               type="text"
               placeholder="Ex: Carlos"
               value={filterResponsavel}
               onChange={e => setFilterResponsavel(e.target.value)}
-              className="px-3 py-1.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-xs font-bold outline-none focus:ring-2 focus:ring-indigo-500 transition-all w-32"
+              className="px-3 py-1.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 text-xs font-bold outline-none focus:ring-2 focus:ring-indigo-500 transition-all w-40"
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Criado De</label>
+            <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest ml-1">Data p/ Novo Cadastro</label>
             <input
               type="date"
               value={filterStartDate}
@@ -151,7 +146,13 @@ const Kanban: React.FC = () => {
             />
           </div>
           <button
-            onClick={() => { setSelectedClient(null); setIsClientModalOpen(true); }}
+            onClick={() => {
+              setSelectedClient({
+                responsavel: filterResponsavel,
+                createdAt: filterStartDate || new Date().toISOString().split('T')[0]
+              } as any);
+              setIsClientModalOpen(true);
+            }}
             className="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-indigo-700 transition flex items-center gap-2 shadow-lg shadow-indigo-200 dark:shadow-none"
           >
             <i className="fas fa-plus"></i> Novo Lead
@@ -238,10 +239,10 @@ const Kanban: React.FC = () => {
                             <i className="fas fa-clock opacity-40"></i> Na etapa há: <span className="text-indigo-500 font-bold">{getStageTime(client)}</span>
                           </p>
                           <p className="text-[10px] text-slate-400 dark:text-slate-500 flex items-center gap-2">
-                            <i className="fas fa-calendar-plus opacity-40"></i> Criado em: <span className="font-bold">{new Date(client.createdAt).toLocaleDateString()}</span>
+                            <i className="fas fa-calendar-plus opacity-40"></i> Criado em: <span className="font-bold">{client.createdAt ? new Date(client.createdAt).toLocaleDateString() : '---'}</span>
                           </p>
                           <p className="text-[10px] text-slate-500 dark:text-slate-400 flex items-center gap-2">
-                            <i className="fas fa-user-tie opacity-40"></i> Resp: <span className="font-bold text-slate-700 dark:text-slate-300">{client.responsavel}</span>
+                            <i className="fas fa-user-tie opacity-40"></i> Resp: <span className="font-bold text-slate-700 dark:text-slate-300">{client.responsavel || 'Não atribuído'}</span>
                           </p>
                         </div>
 

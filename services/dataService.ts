@@ -24,25 +24,31 @@ class DataService {
     })) as Client[];
   }
 
-  async addClient(client: Omit<Client, 'id' | 'createdAt' | 'historicoEtapas' | 'interacoes'>) {
+  async addClient(client: Omit<Client, 'id' | 'historicoEtapas' | 'interacoes'>) {
+    const insertData: any = {
+      type: client.type,
+      razao_social: client.razaoSocial,
+      nome_fantasia: client.nomeFantasia,
+      documento: client.documento,
+      contato: client.contato,
+      whatsapp: client.whatsapp,
+      email: client.email,
+      endereco: client.endereco,
+      segmento: client.segmento,
+      origem: client.origem,
+      responsavel: client.responsavel,
+      status: client.status,
+      ativo: client.ativo,
+      obs: client.obs
+    };
+
+    if (client.createdAt) {
+      insertData.created_at = client.createdAt;
+    }
+
     const { data, error } = await supabase
       .from('clients')
-      .insert([{
-        type: client.type,
-        razao_social: client.razaoSocial,
-        nome_fantasia: client.nomeFantasia,
-        documento: client.documento,
-        contato: client.contato,
-        whatsapp: client.whatsapp,
-        email: client.email,
-        endereco: client.endereco,
-        segmento: client.segmento,
-        origem: client.origem,
-        responsavel: client.responsavel,
-        status: client.status,
-        ativo: client.ativo,
-        obs: client.obs
-      }])
+      .insert([insertData])
       .select()
       .single();
 
@@ -131,6 +137,7 @@ class DataService {
     if (data.proximaAcaoData) { updateData.proxima_acao_data = data.proximaAcaoData; delete updateData.proximaAcaoData; }
     if (data.proximaAcaoDesc) { updateData.proxima_acao_desc = data.proximaAcaoDesc; delete updateData.proximaAcaoDesc; }
     if (data.createdAt) { updateData.created_at = data.createdAt; delete updateData.createdAt; }
+    if (data.responsavel !== undefined) { updateData.responsavel = data.responsavel; }
 
     const { error } = await supabase.from('clients').update(updateData).eq('id', clientId);
     if (error) throw error;
