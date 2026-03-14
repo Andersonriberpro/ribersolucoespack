@@ -60,6 +60,12 @@ export interface Client {
   interacoes: Interaction[];
   proximaAcaoData?: string;
   proximaAcaoDesc?: string;
+  inscricaoEstadual?: string;
+  cidade?: string;
+  cep?: string;
+  estado?: string;
+  site?: string;
+  instagram?: string;
 }
 
 export interface ContactInfo {

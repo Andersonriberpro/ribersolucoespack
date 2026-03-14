@@ -20,6 +20,12 @@ class DataService {
       interacoes: client.client_interactions.map((i: any) => ({ ...i })),
       proximaAcaoData: client.proxima_acao_data,
       proximaAcaoDesc: client.proxima_acao_desc,
+      inscricaoEstadual: client.inscricao_estadual,
+      cidade: client.cidade,
+      cep: client.cep,
+      estado: client.estado,
+      site: client.site,
+      instagram: client.instagram,
       createdAt: client.created_at
     })) as Client[];
   }
@@ -39,7 +45,13 @@ class DataService {
       responsavel: client.responsavel,
       status: client.status,
       ativo: client.ativo,
-      obs: client.obs
+      obs: client.obs,
+      inscricao_estadual: client.inscricaoEstadual,
+      cidade: client.cidade,
+      cep: client.cep,
+      estado: client.estado,
+      site: client.site,
+      instagram: client.instagram
     };
 
     if (client.createdAt) {
@@ -138,6 +150,12 @@ class DataService {
     if (data.proximaAcaoDesc) { updateData.proxima_acao_desc = data.proximaAcaoDesc; delete updateData.proximaAcaoDesc; }
     if (data.createdAt) { updateData.created_at = data.createdAt; delete updateData.createdAt; }
     if (data.responsavel !== undefined) { updateData.responsavel = data.responsavel; }
+    if (data.inscricaoEstadual !== undefined) { updateData.inscricao_estadual = data.inscricaoEstadual; delete updateData.inscricaoEstadual; }
+    if (data.cidade !== undefined) { updateData.cidade = data.cidade; }
+    if (data.cep !== undefined) { updateData.cep = data.cep; }
+    if (data.estado !== undefined) { updateData.estado = data.estado; }
+    if (data.site !== undefined) { updateData.site = data.site; }
+    if (data.instagram !== undefined) { updateData.instagram = data.instagram; }
 
     const { error } = await supabase.from('clients').update(updateData).eq('id', clientId);
     if (error) throw error;

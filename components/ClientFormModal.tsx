@@ -27,6 +27,12 @@ const ClientFormModal: React.FC<ClientFormModalProps> = ({ isOpen, onClose, onSa
     status: KanbanStatus.PROSPECCAO,
     ativo: true,
     obs: '',
+    inscricaoEstadual: '',
+    cidade: '',
+    cep: '',
+    estado: '',
+    site: '',
+    instagram: '',
     createdAt: new Date().toISOString().split('T')[0]
   });
 
@@ -55,6 +61,12 @@ const ClientFormModal: React.FC<ClientFormModalProps> = ({ isOpen, onClose, onSa
         status: initialData.status || KanbanStatus.PROSPECCAO,
         ativo: initialData.ativo ?? true,
         obs: initialData.obs || '',
+        inscricaoEstadual: initialData.inscricaoEstadual || '',
+        cidade: initialData.cidade || '',
+        cep: initialData.cep || '',
+        estado: initialData.estado || '',
+        site: initialData.site || '',
+        instagram: initialData.instagram || '',
         createdAt: initialData.createdAt ? new Date(initialData.createdAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
       });
     } else {
@@ -73,6 +85,12 @@ const ClientFormModal: React.FC<ClientFormModalProps> = ({ isOpen, onClose, onSa
         status: KanbanStatus.PROSPECCAO,
         ativo: true,
         obs: '',
+        inscricaoEstadual: '',
+        cidade: '',
+        cep: '',
+        estado: '',
+        site: '',
+        instagram: '',
         createdAt: new Date().toISOString().split('T')[0]
       });
     }
@@ -80,9 +98,35 @@ const ClientFormModal: React.FC<ClientFormModalProps> = ({ isOpen, onClose, onSa
 
   if (!isOpen) return null;
 
+  const formatPhone = (value: string) => {
+    const v = value.replace(/\D/g, '').substring(0, 11);
+    if (v.length <= 10) return v.replace(/(\d{2})(\d)/, '($1) $2').replace(/(\d{4})(\d)/, '$1-$2');
+    return v.replace(/(\d{2})(\d)/, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2');
+  };
+
+  const formatCEP = (value: string) => {
+    const v = value.replace(/\D/g, '').substring(0, 8);
+    return v.replace(/(\d{5})(\d)/, '$1-$2');
+  };
+
+  const formatCNPJ = (value: string) => {
+    const v = value.replace(/\D/g, '').substring(0, 14);
+    if (v.length <= 11) {
+      // Format as CPF if up to 11 digits
+      return v.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    }
+    return v.replace(/^(\d{2})(\d)/, '$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3').replace(/\.(\d{3})(\d)/, '.$1/$2').replace(/(\d{4})(\d)/, '$1-$2');
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
-    const val = type === 'checkbox' ? (e.target as HTMLInputElement).checked : value;
+    let formattedValue = value;
+    
+    if (name === 'whatsapp') formattedValue = formatPhone(value);
+    if (name === 'cep') formattedValue = formatCEP(value);
+    if (name === 'documento') formattedValue = formatCNPJ(value);
+
+    const val = type === 'checkbox' ? (e.target as HTMLInputElement).checked : formattedValue;
     setFormData(prev => ({ ...prev, [name]: name === 'ativo' ? value === 'true' : val }));
   };
 
@@ -153,6 +197,10 @@ const ClientFormModal: React.FC<ClientFormModalProps> = ({ isOpen, onClose, onSa
               <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">E-mail <span className="text-rose-500">*</span></label>
               <input type="email" name="email" required value={formData.email} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm" />
             </div>
+            <div className="space-y-1">
+              <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Inscrição Estadual</label>
+              <input type="text" name="inscricaoEstadual" value={formData.inscricaoEstadual} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm" />
+            </div>
             <div className="md:col-span-2 space-y-1">
               <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Endereço Completo <span className="text-rose-500">*</span></label>
               <input
@@ -164,6 +212,37 @@ const ClientFormModal: React.FC<ClientFormModalProps> = ({ isOpen, onClose, onSa
                 autoComplete="off"
                 className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm"
               />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">CEP</label>
+              <input type="text" name="cep" required value={formData.cep} onChange={handleChange} placeholder="00000-000" className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm" />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Cidade</label>
+              <input type="text" name="cidade" required value={formData.cidade} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm" />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Estado</label>
+              <select name="estado" required value={formData.estado} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-bold">
+                <option value="">Selecione...</option>
+                <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option>
+                <option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option>
+                <option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
+                <option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+                <option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option>
+                <option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option>
+                <option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
+                <option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+                <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+              </select>
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Site</label>
+              <input type="text" name="site" value={formData.site} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm" placeholder="www.exemplo.com.br" />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Instagram</label>
+              <input type="text" name="instagram" value={formData.instagram} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none text-sm" />
             </div>
             <div className="space-y-1">
               <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Segmento de Atuação <span className="text-rose-500">*</span></label>
