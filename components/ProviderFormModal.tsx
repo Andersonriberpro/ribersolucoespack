@@ -108,17 +108,43 @@ const ProviderFormModal: React.FC<ProviderFormModalProps> = ({ isOpen, onClose, 
     onSave(initialData ? { ...formData, id: initialData.id } : formData);
   };
 
+  const formatPhone = (value: string) => {
+    const v = value.replace(/\D/g, '').substring(0, 11);
+    if (v.length <= 10) {
+      return v.replace(/(\d{2})(\d)/, '($1) $2').replace(/(\d{4})(\d)/, '$1-$2');
+    }
+    return v.replace(/(\d{2})(\d)/, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2');
+  };
+
+  const formatCEP = (value: string) => {
+    const v = value.replace(/\D/g, '').substring(0, 8);
+    return v.replace(/(\d{5})(\d)/, '$1-$2');
+  };
+
+  const formatCNPJ = (value: string) => {
+    const v = value.replace(/\D/g, '').substring(0, 14);
+    return v.replace(/^(\d{2})(\d)/, '$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3').replace(/\.(\d{3})(\d)/, '.$1/$2').replace(/(\d{4})(\d)/, '$1-$2');
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    let formattedValue = value;
+    if (name === 'whatsapp') formattedValue = formatPhone(value);
+    if (name === 'cep') formattedValue = formatCEP(value);
+    if (name === 'cnpj') formattedValue = formatCNPJ(value);
+    
+    setFormData(prev => ({ ...prev, [name]: formattedValue }));
   };
 
   const handleContactChange = (dept: string, field: keyof ContactInfo, value: string) => {
+    let formattedValue = value;
+    if (field === 'telefone') formattedValue = formatPhone(value);
+
     setFormData(prev => ({
       ...prev,
       [dept]: {
         ...(prev[dept as keyof typeof prev] as ContactInfo),
-        [field]: value
+        [field]: formattedValue
       }
     }));
   };

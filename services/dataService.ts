@@ -221,15 +221,15 @@ class DataService {
     if (data.prazoProducao !== undefined) { updateData.prazo_producao = data.prazoProducao; delete updateData.prazoProducao; }
     if (data.condicoesComerciais !== undefined) { updateData.condicoes_comerciais = data.condicoesComerciais; delete updateData.condicoesComerciais; }
     if (data.comissaoPadrao !== undefined) { updateData.comissao_padrao = data.comissaoPadrao ? parseFloat(data.comissaoPadrao as any) || 0 : 0; delete updateData.comissaoPadrao; }
-    if (data.cep !== undefined) { updateData.cep = data.cep; delete updateData.cep; }
-    if (data.cidade !== undefined) { updateData.cidade = data.cidade; delete updateData.cidade; }
-    if (data.estado !== undefined) { updateData.estado = data.estado; delete updateData.estado; }
-    if (data.site !== undefined) { updateData.site = data.site; delete updateData.site; }
-    if (data.instagram !== undefined) { updateData.instagram = data.instagram; delete updateData.instagram; }
-    if (data.facebook !== undefined) { updateData.facebook = data.facebook; delete updateData.facebook; }
-    if (data.linkedin !== undefined) { updateData.linkedin = data.linkedin; delete updateData.linkedin; }
-    if (data.youtube !== undefined) { updateData.youtube = data.youtube; delete updateData.youtube; }
-    if (data.logo !== undefined) { updateData.logo = data.logo; delete updateData.logo; }
+    if (data.cep !== undefined) { updateData.cep = data.cep; }
+    if (data.cidade !== undefined) { updateData.cidade = data.cidade; }
+    if (data.estado !== undefined) { updateData.estado = data.estado; }
+    if (data.site !== undefined) { updateData.site = data.site; }
+    if (data.instagram !== undefined) { updateData.instagram = data.instagram; }
+    if (data.facebook !== undefined) { updateData.facebook = data.facebook; }
+    if (data.linkedin !== undefined) { updateData.linkedin = data.linkedin; }
+    if (data.youtube !== undefined) { updateData.youtube = data.youtube; }
+    if (data.logo !== undefined) { updateData.logo = data.logo; }
 
     const { error } = await supabase.from('providers').update(updateData).eq('id', providerId);
     if (error) throw error;
