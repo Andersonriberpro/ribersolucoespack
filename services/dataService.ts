@@ -158,7 +158,16 @@ class DataService {
       linhaProdutos: p.linha_produtos,
       prazoProducao: p.prazo_producao,
       condicoesComerciais: p.condicoes_comerciais,
-      comissaoPadrao: p.comissao_padrao
+      comissaoPadrao: p.comissao_padrao,
+      cep: p.cep,
+      cidade: p.cidade,
+      estado: p.estado,
+      site: p.site,
+      instagram: p.instagram,
+      facebook: p.facebook,
+      linkedin: p.linkedin,
+      youtube: p.youtube,
+      logo: p.logo
     })) as Provider[];
   }
 
@@ -176,10 +185,19 @@ class DataService {
         whatsapp: provider.whatsapp,
         email: provider.email,
         endereco: provider.endereco,
+        cep: provider.cep,
+        cidade: provider.cidade,
+        estado: provider.estado,
+        site: provider.site,
+        instagram: provider.instagram,
+        facebook: provider.facebook,
+        linkedin: provider.linkedin,
+        youtube: provider.youtube,
+        logo: provider.logo,
         linha_produtos: provider.linhaProdutos,
         prazo_producao: provider.prazoProducao,
         condicoes_comerciais: provider.condicoesComerciais,
-        comissao_padrao: provider.comissaoPadrao,
+        comissao_padrao: provider.comissaoPadrao ? parseFloat(provider.comissaoPadrao as any) || 0 : 0,
         observacoes: provider.observacoes
       }])
       .select()
@@ -192,16 +210,26 @@ class DataService {
   async updateProvider(providerId: string, data: Partial<Provider>) {
     const updateData: any = { ...data };
     delete updateData.id;
-    if (data.razaoSocial) { updateData.razao_social = data.razaoSocial; delete updateData.razaoSocial; }
-    if (data.nomeFantasia) { updateData.nome_fantasia = data.nomeFantasia; delete updateData.nomeFantasia; }
-    if (data.contatoComercial) { updateData.contato_comercial = data.contatoComercial; delete updateData.contatoComercial; }
-    if (data.contatoFinanceiro) { updateData.contato_financeiro = data.contatoFinanceiro; delete updateData.contatoFinanceiro; }
-    if (data.contatoQualidade) { updateData.contato_qualidade = data.contatoQualidade; delete updateData.contatoQualidade; }
-    if (data.contatoGerencia) { updateData.contato_gerencia = data.contatoGerencia; delete updateData.contatoGerencia; }
-    if (data.linhaProdutos) { updateData.linha_produtos = data.linhaProdutos; delete updateData.linhaProdutos; }
-    if (data.prazoProducao) { updateData.prazo_producao = data.prazoProducao; delete updateData.prazoProducao; }
-    if (data.condicoesComerciais) { updateData.condicoes_comerciais = data.condicoesComerciais; delete updateData.condicoesComerciais; }
-    if (data.comissaoPadrao) { updateData.comissao_padrao = data.comissaoPadrao; delete updateData.comissaoPadrao; }
+    if (data.razaoSocial !== undefined) { updateData.razao_social = data.razaoSocial; delete updateData.razaoSocial; }
+    if (data.nomeFantasia !== undefined) { updateData.nome_fantasia = data.nomeFantasia; delete updateData.nomeFantasia; }
+    if (data.cnpj !== undefined) { updateData.cnpj = data.cnpj; delete updateData.cnpj; }
+    if (data.contatoComercial !== undefined) { updateData.contato_comercial = data.contatoComercial; delete updateData.contatoComercial; }
+    if (data.contatoFinanceiro !== undefined) { updateData.contato_financeiro = data.contatoFinanceiro; delete updateData.contatoFinanceiro; }
+    if (data.contatoQualidade !== undefined) { updateData.contato_qualidade = data.contatoQualidade; delete updateData.contatoQualidade; }
+    if (data.contatoGerencia !== undefined) { updateData.contato_gerencia = data.contatoGerencia; delete updateData.contatoGerencia; }
+    if (data.linhaProdutos !== undefined) { updateData.linha_produtos = data.linhaProdutos; delete updateData.linhaProdutos; }
+    if (data.prazoProducao !== undefined) { updateData.prazo_producao = data.prazoProducao; delete updateData.prazoProducao; }
+    if (data.condicoesComerciais !== undefined) { updateData.condicoes_comerciais = data.condicoesComerciais; delete updateData.condicoesComerciais; }
+    if (data.comissaoPadrao !== undefined) { updateData.comissao_padrao = data.comissaoPadrao ? parseFloat(data.comissaoPadrao as any) || 0 : 0; delete updateData.comissaoPadrao; }
+    if (data.cep !== undefined) { updateData.cep = data.cep; delete updateData.cep; }
+    if (data.cidade !== undefined) { updateData.cidade = data.cidade; delete updateData.cidade; }
+    if (data.estado !== undefined) { updateData.estado = data.estado; delete updateData.estado; }
+    if (data.site !== undefined) { updateData.site = data.site; delete updateData.site; }
+    if (data.instagram !== undefined) { updateData.instagram = data.instagram; delete updateData.instagram; }
+    if (data.facebook !== undefined) { updateData.facebook = data.facebook; delete updateData.facebook; }
+    if (data.linkedin !== undefined) { updateData.linkedin = data.linkedin; delete updateData.linkedin; }
+    if (data.youtube !== undefined) { updateData.youtube = data.youtube; delete updateData.youtube; }
+    if (data.logo !== undefined) { updateData.logo = data.logo; delete updateData.logo; }
 
     const { error } = await supabase.from('providers').update(updateData).eq('id', providerId);
     if (error) throw error;

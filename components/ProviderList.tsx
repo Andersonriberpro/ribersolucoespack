@@ -44,9 +44,10 @@ const ProviderList: React.FC = () => {
       fetchProviders();
       setIsModalOpen(false);
       setSelectedProvider(null);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao salvar fornecedor:', error);
-      alert('Erro ao salvar o fornecedor. Verifique os dados e tente novamente.');
+      const msg = error instanceof Error ? error.message : (error.message || JSON.stringify(error));
+      alert('Erro ao salvar o fornecedor: ' + msg);
     }
   };
 

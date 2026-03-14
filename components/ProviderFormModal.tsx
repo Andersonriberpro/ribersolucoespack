@@ -50,10 +50,10 @@ const ProviderFormModal: React.FC<ProviderFormModalProps> = ({ isOpen, onClose, 
         nomeFantasia: initialData.nomeFantasia || '',
         cnpj: initialData.cnpj || '',
         logo: initialData.logo || '',
-        contatoComercial: { ...initialData.contatoComercial } || { ...initialContact },
-        contatoFinanceiro: { ...initialData.contatoFinanceiro } || { ...initialContact },
-        contatoGerencia: { ...initialData.contatoGerencia } || { ...initialContact },
-        contatoQualidade: { ...initialData.contatoQualidade } || { ...initialContact },
+        contatoComercial: initialData.contatoComercial ? { ...initialData.contatoComercial } : { ...initialContact },
+        contatoFinanceiro: initialData.contatoFinanceiro ? { ...initialData.contatoFinanceiro } : { ...initialContact },
+        contatoGerencia: initialData.contatoGerencia ? { ...initialData.contatoGerencia } : { ...initialContact },
+        contatoQualidade: initialData.contatoQualidade ? { ...initialData.contatoQualidade } : { ...initialContact },
         whatsapp: initialData.whatsapp || '',
         email: initialData.email || '',
         site: initialData.site || '',
@@ -147,8 +147,14 @@ const ProviderFormModal: React.FC<ProviderFormModalProps> = ({ isOpen, onClose, 
     }));
   };
 
-  const ContactBlock = ({ label, dept }: { label: string, dept: string }) => (
-    <div className="bg-white dark:bg-slate-900 p-3 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm space-y-2 transition-colors">
+  const handleSiteBlur = () => {
+    if (formData.site && !formData.site.startsWith('http://') && !formData.site.startsWith('https://')) {
+      setFormData(prev => ({ ...prev, site: `https://${prev.site}` }));
+    }
+  };
+
+  const renderContactBlock = (label: string, dept: string) => (
+    <div key={dept} className="bg-white dark:bg-slate-900 p-3 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm space-y-2 transition-colors">
       <h5 className="text-[11px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-tighter border-b border-slate-100 dark:border-slate-800 pb-1 mb-2">
         {label}
       </h5>
@@ -244,10 +250,10 @@ const ProviderFormModal: React.FC<ProviderFormModalProps> = ({ isOpen, onClose, 
               <i className="fas fa-address-book text-indigo-500"></i> Contatos Setoriais
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              <ContactBlock label="Comercial" dept="contatoComercial" />
-              <ContactBlock label="Financeiro" dept="contatoFinanceiro" />
-              <ContactBlock label="Controle de Qualidade" dept="contatoQualidade" />
-              <ContactBlock label="Gerente" dept="contatoGerencia" />
+              {renderContactBlock("Comercial", "contatoComercial")}
+              {renderContactBlock("Financeiro", "contatoFinanceiro")}
+              {renderContactBlock("Controle de Qualidade", "contatoQualidade")}
+              {renderContactBlock("Gerente", "contatoGerencia")}
             </div>
           </div>
 
@@ -264,8 +270,8 @@ const ProviderFormModal: React.FC<ProviderFormModalProps> = ({ isOpen, onClose, 
             </div>
             <div className="md:col-span-2 space-y-1">
               <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Site</label>
-              <input type="url" name="site" value={formData.site} onChange={handleChange}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none text-sm dark:text-white" placeholder="https://..." />
+              <input type="text" name="site" value={formData.site} onChange={handleChange} onBlur={handleSiteBlur}
+                className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none text-sm dark:text-white" placeholder="www.exemplo.com.br" />
             </div>
           </div>
 
