@@ -382,6 +382,13 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ isOpen, onClose, on
                         <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Estrutura Material</label>
                         <input type="text" name="material" value={formData.material} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus:ring-2 focus:ring-indigo-500 outline-none text-sm dark:text-white" />
                       </div>
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tipo de Impressão</label>
+                        <select name="impressaoTipo" value={formData.impressaoTipo} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm dark:text-white font-bold">
+                          <option value="Interna">Interna</option>
+                          <option value="Externa">Externa</option>
+                        </select>
+                      </div>
                       {!isBobina ? (
                         <div className="space-y-1">
                           <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Medidas (L x A x C)</label>
@@ -478,7 +485,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ isOpen, onClose, on
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       <div className="space-y-1">
                         <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase">Tipo de Impressão</label>
-                        <select name="impressaoTipo" value={formData.impressaoTipo} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm dark:text-white">
+                        <select name="impressaoTipo" value={formData.impressaoTipo} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm dark:text-white font-bold text-indigo-600 dark:text-indigo-400">
                           <option value="Interna">Interna</option>
                           <option value="Externa">Externa</option>
                         </select>

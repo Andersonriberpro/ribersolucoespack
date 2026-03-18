@@ -269,9 +269,25 @@ class DataService {
       tipoEmbalagem: p.tipo_embalagem,
       sentidoDesbobinamento: p.sentido_desbobinamento,
       diametroMaximoBobina: p.diametro_maximo_bobina,
+      impressaoTipo: p.impressao_tipo,
       plantaTecnicaUrl: p.planta_tecnica_url,
       layoutUrl: p.layout_url,
-      observacoesTecnicas: p.observacoes_tecnicas
+      observacoesTecnicas: p.observacoes_tecnicas,
+      fichaNumero: p.ficha_numero,
+      fichaData: p.ficha_data,
+      fichaHora: p.ficha_hora,
+      modeloEmbalagem: p.modelo_embalagem,
+      faturamentoCliche: p.faturamento_cliche,
+      valorCliche: p.valor_cliche,
+      cilindroCamisa: p.cilindro_camisa,
+      duplaFace: p.dupla_face,
+      espessuraCliche: p.espessura_cliche,
+      filmeAberto: p.filme_aberto,
+      repeticaoLongitudinal: p.repeticao_longitudinal,
+      repeticaoLateral: p.repeticao_lateral,
+      quantidadeCoresFicha: p.quantidade_cores_ficha,
+      coresFicha: p.cores_ficha,
+      obsFicha: p.obs_ficha
     })) as ProductSpecification[];
   }
 
@@ -280,6 +296,7 @@ class DataService {
       .from('products')
       .insert([{
         sku: product.sku || `PROD-${Math.floor(Math.random() * 9000) + 1000}`,
+        barcode: product.barcode,
         nome: product.nome,
         provider_id: product.providerId,
         client_id: product.clientId,
@@ -291,7 +308,33 @@ class DataService {
         gramatura: product.gramatura,
         espessura: product.espessura,
         personalizado: product.personalizado,
-        cores: product.cores
+        cores: product.cores,
+        impressao_tipo: product.impressaoTipo,
+        sentido_desbobinamento: product.sentidoDesbobinamento,
+        diametro_maximo_bobina: product.diametroMaximoBobina,
+        planta_tecnica_url: product.plantaTecnicaUrl,
+        layout_url: product.layoutUrl,
+        observacoes_tecnicas: product.observacoesTecnicas,
+        ficha_numero: product.fichaNumero,
+        ficha_data: product.fichaData,
+        ficha_hora: product.fichaHora,
+        modelo_embalagem: product.modeloEmbalagem,
+        faturamento_cliche: product.faturamentoCliche,
+        valor_cliche: product.valorCliche,
+        maquina: product.maquina,
+        cilindro_camisa: product.cilindroCamisa,
+        distorcao: product.distorcao,
+        deslocar: product.deslocar,
+        dupla_face: product.duplaFace,
+        espessura_cliche: product.espessuraCliche,
+        lineatura: product.lineatura,
+        fotocelula: product.fotocelula,
+        filme_aberto: product.filmeAberto,
+        repeticao_longitudinal: product.repeticaoLongitudinal,
+        repeticao_lateral: product.repeticaoLateral,
+        quantidade_cores_ficha: product.quantidadeCoresFicha,
+        cores_ficha: product.coresFicha,
+        obs_ficha: product.obsFicha
       }])
       .select()
       .single();
@@ -303,12 +346,31 @@ class DataService {
   async updateProduct(productId: string, data: Partial<ProductSpecification>) {
     const updateData: any = { ...data };
     delete updateData.id;
-    if (data.providerId) { updateData.provider_id = data.providerId; delete updateData.providerId; }
-    if (data.clientId) { updateData.client_id = data.clientId; delete updateData.clientId; }
-    if (data.tipoEmbalagem) { updateData.tipo_embalagem = data.tipoEmbalagem; delete updateData.tipo_embalagem; } // error in mapping property name in input? No, it's tipoEmbalagem
-    if (data.tipoEmbalagem) { updateData.tipo_embalagem = data.tipoEmbalagem; delete updateData.tipoEmbalagem; }
+    if (data.providerId !== undefined) { updateData.provider_id = data.providerId; delete updateData.providerId; }
+    if (data.clientId !== undefined) { updateData.client_id = data.clientId; delete updateData.clientId; }
+    if (data.tipoEmbalagem !== undefined) { updateData.tipo_embalagem = data.tipoEmbalagem; delete updateData.tipoEmbalagem; }
+    if (data.sentidoDesbobinamento !== undefined) { updateData.sentido_desbobinamento = data.sentidoDesbobinamento; delete updateData.sentidoDesbobinamento; }
+    if (data.diametroMaximoBobina !== undefined) { updateData.diametro_maximo_bobina = data.diametroMaximoBobina; delete updateData.diametroMaximoBobina; }
+    if (data.impressaoTipo !== undefined) { updateData.impressao_tipo = data.impressaoTipo; delete updateData.impressaoTipo; }
+    if (data.plantaTecnicaUrl !== undefined) { updateData.planta_tecnica_url = data.plantaTecnicaUrl; delete updateData.plantaTecnicaUrl; }
+    if (data.layoutUrl !== undefined) { updateData.layout_url = data.layoutUrl; delete updateData.layoutUrl; }
+    if (data.observacoesTecnicas !== undefined) { updateData.observacoes_tecnicas = data.observacoesTecnicas; delete updateData.observacoesTecnicas; }
+    if (data.fichaNumero !== undefined) { updateData.ficha_numero = data.fichaNumero; delete updateData.fichaNumero; }
+    if (data.fichaData !== undefined) { updateData.ficha_data = data.fichaData; delete updateData.fichaData; }
+    if (data.fichaHora !== undefined) { updateData.ficha_hora = data.fichaHora; delete updateData.fichaHora; }
+    if (data.modeloEmbalagem !== undefined) { updateData.modelo_embalagem = data.modeloEmbalagem; delete updateData.modeloEmbalagem; }
+    if (data.faturamentoCliche !== undefined) { updateData.faturamento_cliche = data.faturamentoCliche; delete updateData.faturamentoCliche; }
+    if (data.valorCliche !== undefined) { updateData.valor_cliche = data.valorCliche; delete updateData.valorCliche; }
+    if (data.cilindroCamisa !== undefined) { updateData.cilindro_camisa = data.cilindroCamisa; delete updateData.cilindroCamisa; }
+    if (data.duplaFace !== undefined) { updateData.dupla_face = data.duplaFace; delete updateData.duplaFace; }
+    if (data.espessuraCliche !== undefined) { updateData.espessura_cliche = data.espessuraCliche; delete updateData.espessuraCliche; }
+    if (data.filmeAberto !== undefined) { updateData.filme_aberto = data.filmeAberto; delete updateData.filmeAberto; }
+    if (data.repeticaoLongitudinal !== undefined) { updateData.repeticao_longitudinal = data.repeticaoLongitudinal; delete updateData.repeticaoLongitudinal; }
+    if (data.repeticaoLateral !== undefined) { updateData.repeticao_lateral = data.repeticaoLateral; delete updateData.repeticaoLateral; }
+    if (data.quantidadeCoresFicha !== undefined) { updateData.quantidade_cores_ficha = data.quantidadeCoresFicha; delete updateData.quantidadeCoresFicha; }
+    if (data.coresFicha !== undefined) { updateData.cores_ficha = data.coresFicha; delete updateData.coresFicha; }
+    if (data.obsFicha !== undefined) { updateData.obs_ficha = data.obsFicha; delete updateData.obsFicha; }
 
-    // ... more mappings if needed
     const { error } = await supabase.from('products').update(updateData).eq('id', productId);
     if (error) throw error;
   }
