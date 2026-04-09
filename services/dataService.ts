@@ -292,10 +292,11 @@ class DataService {
   }
 
   async addProduct(product: Omit<ProductSpecification, 'id'>) {
+    const generatedSku = product.sku || `PROD-${Math.floor(Math.random() * 9000) + 1000}`;
     const { data, error } = await supabase
       .from('products')
       .insert([{
-        sku: product.sku || `PROD-${Math.floor(Math.random() * 9000) + 1000}`,
+        sku: generatedSku,
         barcode: product.barcode,
         nome: product.nome,
         provider_id: product.providerId,
@@ -315,7 +316,7 @@ class DataService {
         planta_tecnica_url: product.plantaTecnicaUrl,
         layout_url: product.layoutUrl,
         observacoes_tecnicas: product.observacoesTecnicas,
-        ficha_numero: product.fichaNumero,
+        ficha_numero: product.fichaNumero || generatedSku,
         ficha_data: product.fichaData,
         ficha_hora: product.fichaHora,
         modelo_embalagem: product.modeloEmbalagem,

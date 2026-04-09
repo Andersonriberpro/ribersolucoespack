@@ -105,7 +105,7 @@ const ProductSpecificationList: React.FC = () => {
                   <th className="px-6 py-4">Cliente / Representada</th>
                   <th className="px-6 py-4">Tipo de Embalagem</th>
                   <th className="px-6 py-4">Medidas Técnicas</th>
-                  <th className="px-6 py-4">Cores</th>
+                  <th className="px-6 py-4">Diâmetro Máx. Bobina</th>
                   <th className="px-6 py-4 text-center">Ações</th>
                 </tr>
               </thead>
@@ -155,24 +155,9 @@ const ProductSpecificationList: React.FC = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="flex items-center gap-1">
-                          {coresAtivas.length > 0 ? (
-                            <>
-                              <div className="flex -space-x-1">
-                                {coresAtivas.slice(0, 3).map((_, i) => (
-                                  <div key={i} className="w-4 h-4 rounded-full border border-white dark:border-slate-700 bg-slate-200 dark:bg-slate-700 flex items-center justify-center" title="Cor configurada">
-                                    <div className="w-2 h-2 rounded-full bg-slate-400"></div>
-                                  </div>
-                                ))}
-                              </div>
-                              {coresAtivas.length > 3 && (
-                                <span className="text-[10px] font-bold text-slate-400">+{coresAtivas.length - 3}</span>
-                              )}
-                            </>
-                          ) : (
-                            <span className="text-[10px] text-slate-300 italic">Sem cores</span>
-                          )}
-                        </div>
+                        <span className="text-slate-700 dark:text-slate-300 font-bold text-sm">
+                          {product.diametroMaximoBobina ? `${product.diametroMaximoBobina} mm` : <span className="text-slate-300 italic font-normal text-[10px]">N/A</span>}
+                        </span>
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex justify-center gap-2">
