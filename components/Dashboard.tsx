@@ -55,13 +55,21 @@ const Dashboard: React.FC = () => {
   const stats = useMemo(() => {
     const totalFaturado = filteredOrders.reduce((acc, o) => acc + o.valorFinal, 0);
     const totalComissao = filteredOrders.reduce((acc, o) => acc + o.comissaoValor, 0);
-    const ativos = filteredOrders.filter(o => o.statusOperacional !== 'Cancelado').length;
-    const aguardando = filteredOrders.filter(o => o.statusOperacional?.toLowerCase().includes('aguardando')).length;
-    const cancelados = filteredOrders.filter(o => o.statusOperacional?.toLowerCase().includes('cancelado')).length;
+    const ativosList = filteredOrders.filter(o => o.statusOperacional !== 'Cancelado');
+    const ativos = ativosList.length;
+    const ativosValor = ativosList.reduce((acc, o) => acc + o.valorFinal, 0);
+
+    const aguardandoList = filteredOrders.filter(o => o.statusOperacional?.toLowerCase().includes('aguardando'));
+    const aguardando = aguardandoList.length;
+    const aguardandoValor = aguardandoList.reduce((acc, o) => acc + o.valorFinal, 0);
+
+    const canceladosList = filteredOrders.filter(o => o.statusOperacional?.toLowerCase().includes('cancelado'));
+    const cancelados = canceladosList.length;
+    const canceladosValor = canceladosList.reduce((acc, o) => acc + o.valorFinal, 0);
 
     const conversionRate = budgetsCount > 0 ? (filteredOrders.length / budgetsCount) * 100 : 0;
 
-    return { totalFaturado, totalComissao, ativos, aguardando, cancelados, conversionRate };
+    return { totalFaturado, totalComissao, ativos, ativosValor, aguardando, aguardandoValor, cancelados, canceladosValor, conversionRate };
   }, [filteredOrders, budgetsCount]);
 
   // Data for Bar Chart (Billing by Month R$)
@@ -177,9 +185,9 @@ const Dashboard: React.FC = () => {
         {[
           { label: 'Total Faturado', value: `R$ ${stats.totalFaturado.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`, icon: 'fa-money-bill-trend-up', color: 'text-emerald-600', bg: 'bg-emerald-50 dark:bg-emerald-500/10' },
           { label: 'Comissões', value: `R$ ${stats.totalComissao.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`, icon: 'fa-hand-holding-dollar', color: 'text-amber-600', bg: 'bg-amber-50 dark:bg-amber-500/10' },
-          { label: 'Pedidos Ativos', value: stats.ativos, icon: 'fa-box-open', color: 'text-indigo-600', bg: 'bg-indigo-50 dark:bg-indigo-500/10' },
-          { label: 'Pedidos Aguardando', value: stats.aguardando, icon: 'fa-clock', color: 'text-blue-600', bg: 'bg-blue-50 dark:bg-blue-500/10' },
-          { label: 'Pedidos Cancelados', value: stats.cancelados, icon: 'fa-ban', color: 'text-rose-600', bg: 'bg-rose-50 dark:bg-rose-500/10' },
+          { label: 'Pedidos em Aberto', value: stats.ativos, subValue: `R$ ${stats.ativosValor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, icon: 'fa-box-open', color: 'text-indigo-600', bg: 'bg-indigo-50 dark:bg-indigo-500/10' },
+          { label: 'Pedidos Aguardando', value: stats.aguardando, subValue: `R$ ${stats.aguardandoValor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, icon: 'fa-clock', color: 'text-blue-600', bg: 'bg-blue-50 dark:bg-blue-500/10' },
+          { label: 'Pedidos Cancelados', value: stats.cancelados, subValue: `R$ ${stats.canceladosValor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, icon: 'fa-ban', color: 'text-rose-600', bg: 'bg-rose-50 dark:bg-rose-500/10' },
           { label: 'Conversão', value: `${stats.conversionRate.toFixed(1)}%`, icon: 'fa-arrow-up-right-dots', color: 'text-slate-600', bg: 'bg-slate-100 dark:bg-slate-800' },
         ].map((kpi, idx) => (
           <div key={idx} className="bg-white dark:bg-slate-900 p-4 lg:p-5 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col items-center text-center transition-all hover:shadow-md">
@@ -188,6 +196,9 @@ const Dashboard: React.FC = () => {
             </div>
             <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">{kpi.label}</p>
             <h3 className="text-xl font-black mt-1 text-slate-900 dark:text-slate-100">{kpi.value}</h3>
+            {kpi.subValue && (
+              <p className={`text-[10px] font-bold mt-1 ${kpi.color}`}>{kpi.subValue}</p>
+            )}
           </div>
         ))}
       </div>

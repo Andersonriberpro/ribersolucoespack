@@ -395,6 +395,8 @@ class DataService {
       clientId: o.client_id,
       providerId: o.provider_id,
       productId: o.product_id,
+      quantidade: o.quantidade,
+      valorFinal: o.valor_final,
       comissaoValor: o.comissao_valor,
       comissaoStatus: o.comissao_status,
       statusOperacional: o.status_operacional,
