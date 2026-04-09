@@ -40,10 +40,8 @@ const BudgetList: React.FC = () => {
   const handleSave = async (data: any) => {
     try {
       if (data.id) {
-        const budgetData: Partial<Budget> = {
-          numero: data.numero,
-          clientId: data.clientId,
-          productId: data.productId,
+        const budgetData: any = {
+          ...data,
           quantidade: data.unidade === 'MIL' ? data.quantidadeMlh : data.pesoTotalInput,
           valorUnitario: data.precoUnitarioIcms,
           valorTotal: (data.unidade === 'MIL' ? data.quantidadeMlh : data.pesoTotalInput) * data.precoUnitarioIcms,

@@ -439,7 +439,8 @@ class DataService {
       productId: b.product_id,
       valorUnitario: b.valor_unitario,
       valorTotal: b.valor_total,
-      createdAt: b.created_at
+      createdAt: b.created_at,
+      ...b.dados_extras
     })) as Budget[];
   }
 
@@ -454,7 +455,8 @@ class DataService {
         valor_unitario: budgetData.valorUnitario,
         valor_total: budgetData.valorTotal,
         status: budgetData.status || 'Enviado',
-        validade: budgetData.validade
+        validade: budgetData.validade,
+        dados_extras: budgetData
       }])
       .select()
       .single();
@@ -462,13 +464,16 @@ class DataService {
     if (error) throw error;
     return data;
   }
-  async updateBudget(budgetId: string, data: Partial<Budget>) {
-    const updateData: any = { ...data };
-    delete updateData.id;
-    if (data.clientId) { updateData.client_id = data.clientId; delete updateData.clientId; }
-    if (data.productId) { updateData.product_id = data.productId; delete updateData.productId; }
-    if (data.valorUnitario) { updateData.valor_unitario = data.valorUnitario; delete updateData.valorUnitario; }
-    if (data.valorTotal) { updateData.valor_total = data.valorTotal; delete updateData.valorTotal; }
+  async updateBudget(budgetId: string, data: any) {
+    const updateData: any = { dados_extras: { ...data } };
+    if (updateData.dados_extras.id) delete updateData.dados_extras.id;
+
+    if (data.clientId !== undefined) updateData.client_id = data.clientId;
+    if (data.productId !== undefined) updateData.product_id = data.productId;
+    if (data.valorUnitario !== undefined) updateData.valor_unitario = data.valorUnitario;
+    if (data.valorTotal !== undefined) updateData.valor_total = data.valorTotal;
+    if (data.status !== undefined) updateData.status = data.status;
+    if (data.validade !== undefined) updateData.validade = data.validade;
 
     const { error } = await supabase.from('budgets').update(updateData).eq('id', budgetId);
     if (error) throw error;
@@ -479,18 +484,19 @@ class DataService {
     if (error) throw error;
   }
 
-  async updateOrder(orderId: string, data: Partial<Order>) {
-    const updateData: any = { ...data };
-    delete updateData.id;
-    if (data.budgetId) { updateData.budget_id = data.budgetId; delete updateData.budgetId; }
-    if (data.clientId) { updateData.client_id = data.clientId; delete updateData.clientId; }
-    if (data.providerId) { updateData.provider_id = data.providerId; delete updateData.providerId; }
-    if (data.productId) { updateData.product_id = data.productId; delete updateData.productId; }
-    if (data.valorFinal) { updateData.valor_final = data.valorFinal; delete updateData.valorFinal; }
-    if (data.comissaoValor) { updateData.comissao_valor = data.comissaoValor; delete updateData.comissaoValor; }
-    if (data.comissaoStatus) { updateData.comissao_status = data.comissaoStatus; delete updateData.comissaoStatus; }
-    if (data.statusOperacional) { updateData.status_operacional = data.statusOperacional; delete updateData.statusOperacional; }
-    if (data.dataPedido) { updateData.data_pedido = data.dataPedido; delete updateData.dataPedido; }
+  async updateOrder(orderId: string, data: any) {
+    const updateData: any = { dados_extras: { ...data } };
+    if (updateData.dados_extras.id) delete updateData.dados_extras.id;
+
+    if (data.budgetId !== undefined) updateData.budget_id = data.budgetId;
+    if (data.clientId !== undefined) updateData.client_id = data.clientId;
+    if (data.providerId !== undefined) updateData.provider_id = data.providerId;
+    if (data.productId !== undefined) updateData.product_id = data.productId;
+    if (data.valorFinal !== undefined) updateData.valor_final = data.valorFinal;
+    if (data.comissaoValor !== undefined) updateData.comissao_valor = data.comissaoValor;
+    if (data.comissaoStatus !== undefined) updateData.comissao_status = data.comissaoStatus;
+    if (data.statusOperacional !== undefined) updateData.status_operacional = data.statusOperacional;
+    if (data.dataPedido !== undefined) updateData.data_pedido = data.dataPedido;
 
     const { error } = await supabase.from('orders').update(updateData).eq('id', orderId);
     if (error) throw error;
