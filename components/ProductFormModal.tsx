@@ -421,6 +421,10 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({ isOpen, onClose, on
                         <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Diâmetro Máximo Bobina</label>
                         <input type="text" name="diametroMaximoBobina" value={formData.diametroMaximoBobina} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm dark:text-white" />
                       </div>
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Qtde. de Cores</label>
+                        <input type="number" name="quantidadeCoresFicha" value={formData.quantidadeCoresFicha} onChange={handleChange} className="w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm dark:text-white" />
+                      </div>
                     </div>
                   </section>
 
