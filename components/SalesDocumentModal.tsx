@@ -74,6 +74,7 @@ const SalesDocumentModal: React.FC<SalesDocumentModalProps> = ({ isOpen, onClose
     faturamentoEstado: '',
     faturamentoCNPJ: '',
     faturamentoIE: '',
+    tipoEmbalagem: 'Saquinho monocamada',
     composicaoEstrutura: '',
     composicaoEstrutura2: '',
     largura: 0,
@@ -161,6 +162,7 @@ const SalesDocumentModal: React.FC<SalesDocumentModalProps> = ({ isOpen, onClose
         faturamentoEstado: '',
         faturamentoCNPJ: '',
         faturamentoIE: '',
+        tipoEmbalagem: 'Saquinho monocamada',
         composicaoEstrutura: '',
         composicaoEstrutura2: '',
         largura: 0,
@@ -237,6 +239,7 @@ const SalesDocumentModal: React.FC<SalesDocumentModalProps> = ({ isOpen, onClose
           sentidoDesbobinamento: prod.sentidoDesbobinamento || '',
           diametroMaximoBobina: prod.diametroMaximoBobina || '',
           tipoImpressao: prod.impressaoTipo || 'Externa',
+          tipoEmbalagem: prod.tipoEmbalagem || 'Saquinho monocamada',
           composicaoEstrutura: prod.material || ''
         }));
       }
@@ -657,7 +660,16 @@ const SalesDocumentModal: React.FC<SalesDocumentModalProps> = ({ isOpen, onClose
                     </h4>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div className={`space-y-1 ${mode === 'ORÇAMENTO' ? 'md:col-span-4' : 'md:col-span-2'}`}>
+                    <div className="space-y-1 md:col-span-2">
+                      <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tipo de Embalagem</label>
+                      <select name="tipoEmbalagem" value={formData.tipoEmbalagem} onChange={handleChange} className="w-full px-3 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 text-sm outline-none dark:bg-slate-800 dark:text-white transition-all">
+                        <option value="Saquinho monocamada">Saquinho monocamada</option>
+                        <option value="Saquinho Laminado">Saquinho Laminado</option>
+                        <option value="Bobina monocamada">Bobina monocamada</option>
+                        <option value="Bobina Laminado">Bobina Laminado</option>
+                      </select>
+                    </div>
+                    <div className={`space-y-1 ${mode === 'ORÇAMENTO' ? 'md:col-span-2' : 'md:col-span-2'}`}>
                       <label className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Composição da Estrutura</label>
                       <input type="text" name="composicaoEstrutura" value={formData.composicaoEstrutura} onChange={handleChange} className="w-full px-3 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 text-sm outline-none dark:bg-slate-800 dark:text-white transition-all" />
                       {mode === 'ORÇAMENTO' && (
